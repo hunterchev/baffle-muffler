@@ -1,19 +1,18 @@
 flowchart TD
   S0["Measure tube ID/OD<br/>rerun muffler.py"]
-  S1["Cut can + liner 250"]
+  S1["Cut can 250 + liner 244<br/>+ nipples 28"]
   S2["Order/cut discs + guide plate"]
   S3["Build centering sleeve"]
-  S4["Punch 112 marks via guide plate"]
-  S5["Pilot Ø4 via sleeve"]
-  S6["Step-drill Ø9 + deburr"]
-  S7["Clean (acetone)"]
-  S8["Fit baffles on liner<br/>dry-fit in can"]
-  S9["W3 baffles to liner<br/>tack then continuous"]
-  S10["Core fill (optional packing)"]
-  S11["Slide core into can"]
-  S12["Caps in<br/>W2 then W1"]
-  S13["Passivate"]
-  S14["Leak + rattle + sound check"]
+  S4["Punch 480 marks via guide plate"]
+  S5["Drill Ø4 through sleeve + deburr"]
+  S6["Clean (acetone)"]
+  S7["Fit baffles on liner<br/>dry-fit in can"]
+  S8["W3 baffles to liner<br/>tack then continuous"]
+  S9["W2 3/4"-14 NPT nipples to caps"]
+  S10["Slide core into can"]
+  S11["Caps in<br/>W1"]
+  S12["Passivate + chase threads"]
+  S13["Leak + rattle + sound check"]
   S0 --> S1
   S1 --> S2
   S2 --> S3
@@ -27,5 +26,4 @@ flowchart TD
   S10 --> S11
   S11 --> S12
   S12 --> S13
-  S13 --> S14
-  S14 -->|"leak found: re-weld"| S12
+  S13 -->|"leak found: re-weld"| S11

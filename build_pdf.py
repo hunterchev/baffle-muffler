@@ -34,12 +34,16 @@ IMG = OUT / "pdf_img"
 
 # ---------------- drawings: DXF -> print-friendly PNG ----------------
 DRAWINGS = [
-    ("MUF-000_assembly.dxf", "MUF-000 Assembly half-section: can, liner, caps, 4 baffles; weld callouts W1-W3."),
+    ("MUF-000_assembly.dxf", f"MUF-000 Assembly half-section: can, captured liner, caps with {M.PORT_THREAD} nipples, "
+                             "4 baffles; weld callouts W1-W3."),
     ("MUF-001_outer_can.dxf", "MUF-001 Outer can: 50 OD x 2 wall x 250 tube, ends square, measure ID x4."),
-    ("MUF-002_liner_wrap_layout.dxf", "MUF-002 Liner wrap layout (OD): 112 x Ø9 holes, 8/row, 14 rows, 22.5° stagger."),
-    ("MUF-003_end_cap.dxf", "MUF-003 End cap (x2): 3 mm disc, OD = can ID - 0.2, bore = liner OD + 0.2 (port)."),
+    ("MUF-002_liner_wrap_layout.dxf", f"MUF-002 Liner wrap layout (OD), {M.LINER_L:g} long: {len(M.holes())} x Ø{M.HOLE_D:g} "
+                                      f"holes, {M.HOLES_PER_ROW}/row, {len(M.rows())} rows, {M.ROW_OFFSET_DEG}° stagger."),
+    ("MUF-003_end_cap.dxf", f"MUF-003 End cap (x2): 3 mm disc, port bore {M.PORT_BORE:.1f}; section shows the "
+                            f"{M.PORT_THREAD} nipple, thread relief and spigot."),
     ("MUF-004_baffle.dxf", "MUF-004 Baffle (x4): same 3 mm blank as the cap, stations at 50/100/150/200."),
-    ("drill_jig.dxf", "JIG-001 Drill jig: 0.5 mm wrap-around shim (112 pilots) + centring sleeve with Ø4 guide."),
+    ("drill_jig.dxf", f"JIG-001 Drill jig: 0.5 mm wrap-around shim ({len(M.holes())} marks) + centring sleeve with "
+                      f"Ø{M.GUIDE_D:g} guide."),
 ]
 
 
@@ -58,7 +62,7 @@ def render_dxf(name):
 # ---------------- 3D views: isometric painter's-algorithm renderer ----------------
 # Axis of the muffler = x, z up. Faces are depth-sorted with back-face culling; tubes are finely
 # tessellated so mean-depth sorting stays correct.
-STEEL, STEEL_IN, DISC, PACK, HOLE = (0.74, 0.77, 0.80), (0.55, 0.58, 0.62), (0.45, 0.52, 0.60), (0.85, 0.68, 0.38), (0.12, 0.13, 0.15)
+STEEL, STEEL_IN, DISC, HOLE = (0.74, 0.77, 0.80), (0.55, 0.58, 0.62), (0.45, 0.52, 0.60), (0.12, 0.13, 0.15)
 CAN_R, CAN_RI = M.CAN_OD / 2, M.CAN_ID / 2
 LIN_R, LIN_RI = M.LINER_OD / 2, M.LINER_ID / 2
 D_R, D_RI = M.DISC_OD / 2, M.DISC_ID / 2
@@ -165,26 +169,38 @@ def save_view(fig, name):
     return png
 
 
-def caps_and_core(sc, t0=0.0, t1=TAU, packing=True):
-    for a, b in M.CHAMBERS:
-        if packing:
-            sc.tube(a, b, LIN_R + 0.3, CAN_RI - 0.3, PACK, t0, t1, inner=False)
-    for x in [0, M.L - M.DISC_T] + [z - M.DISC_T / 2 for z in M.BAFFLE_Z]:
-        sc.tube(x, x + M.DISC_T, D_RI, D_R, DISC, t0, t1, inner=False)
+NIP_R, NIP_RI, CAP_RI = M.NPT["od"] / 2, M.NPT["pipe_id"] / 2, M.PORT_BORE / 2
+NIP_OUT = M.NIP_RELIEF + M.NIP_THREAD
+
+
+def nipple(sc, x_out, sign, t0=0.0, t1=TAU, off=(0, 0, 0)):
+    """Port nipple; x_out = outside cap face, sign = -1 sticks out toward -x."""
+    xa, xb = sorted((x_out + sign * NIP_OUT, x_out - sign * (M.DISC_T + M.NIP_SPIGOT)))
+    sc.tube(xa, xb, NIP_RI, NIP_R, STEEL, t0, t1, off=off)
+    xt = x_out + sign * M.NIP_RELIEF                    # thread zone, slightly darker
+    sc.tube(*sorted((xt, x_out + sign * NIP_OUT)), NIP_RI, NIP_R + 0.4, STEEL_IN, t0, t1, off=off, inner=False)
+
+
+def caps_baffles(sc, t0=0.0, t1=TAU):
+    for x in (0, M.L - M.DISC_T):
+        sc.tube(x, x + M.DISC_T, CAP_RI, D_R, DISC, t0, t1, inner=False)
+    for z in M.BAFFLE_Z:
+        sc.tube(z - M.DISC_T / 2, z + M.DISC_T / 2, D_RI, D_R, DISC, t0, t1, inner=False)
+    nipple(sc, 0, -1, t0, t1)
+    nipple(sc, M.L, 1, t0, t1)
 
 
 def view_assembled():
     sc, L = Scene(), M.L
     sc.tube(0, L, CAN_RI, CAN_R, STEEL, inner=False)
-    sc.tube(-0.01, L + 0.01, LIN_RI, LIN_R, STEEL)
-    for x in (0, L):
-        sc.tube(x - 0.02 if x else 0.02, x - 0.02 if x else 0.02, D_RI, D_R, DISC, inner=False)
+    caps_baffles(sc)
     fig, ax = plt.subplots(figsize=(10, 3.6))
     sc.draw(ax)
-    dim(ax, sc, (0, 0, -CAN_R), (L, 0, -CAN_R), f"{L:g}", (0, -18))
+    dim(ax, sc, (0, 0, -CAN_R), (L, 0, -CAN_R), f"{L:g} (can)", (0, -18))
     callout(ax, sc, (L * 0.55, 0, CAN_R), f"MUF-001 can Ø{M.CAN_OD:g} x {M.CAN_T:g}, 304", (0, 22))
-    callout(ax, sc, (L, 0, (D_R + CAN_R) / 2), "cap welds W1 (rim) + W2 (port)", (10, 30))
-    callout(ax, sc, (L, 0, -LIN_RI * 0.4), f"outlet port Ø{M.LINER_ID:g} (liner bore)", (45, -22))
+    callout(ax, sc, (L, 0, (D_R + CAN_R) / 2), "W1 cap to can rim", (-20, 30))
+    callout(ax, sc, (L + NIP_OUT, 0, NIP_R), f"outlet {M.PORT_THREAD} male (W2 nipple to cap)", (40, 26))
+    callout(ax, sc, (-NIP_OUT, 0, -NIP_R), f"inlet {M.PORT_THREAD} male", (-30, -22))
     return save_view(fig, "3d_assembled.png")
 
 
@@ -193,45 +209,45 @@ def view_cutaway():
     tc = math.atan2(sc.e[2], sc.e[1])                     # angle facing the camera
     t0, t1 = tc + math.radians(55), tc + TAU - math.radians(55)
     sc.tube(0, L, CAN_RI, CAN_R, STEEL, t0, t1)
-    caps_and_core(sc, t0, t1)
-    sc.tube(0, L, LIN_RI, LIN_R, STEEL)
+    caps_baffles(sc, t0, t1)
+    sc.tube(M.LINER_Z0, L - M.DISC_T, LIN_RI, LIN_R, STEEL)
     sc.holes(t0=tc - math.radians(42), t1=tc + math.radians(42))   # only liner exposed by the open wedge
     fig, ax = plt.subplots(figsize=(10, 4.2))
     sc.draw(ax)
     up = lambda x, r: (x, r * math.cos(tc), r * math.sin(tc))
     callout(ax, sc, (M.BAFFLE_Z[0], 0, D_R), "baffle 3 mm (W3 to liner)", (-30, 26))
     callout(ax, sc, (M.BAFFLE_Z[2], 0, D_R), f"baffles @ {', '.join(f'{z:g}' for z in M.BAFFLE_Z)}", (20, 30))
-    callout(ax, sc, (M.L - 2, 0, D_R - 2), "end cap 3 mm (W1 + W2)", (25, 22))
+    callout(ax, sc, (M.L - 2, 0, D_R - 2), "end cap 3 mm (W1) + nipple (W2)", (25, 22))
     callout(ax, sc, up((M.CHAMBERS[1][0] + M.CHAMBERS[1][1]) / 2, (LIN_R + CAN_RI) / 2),
-            "core fill (packing)", (-10, -30))
-    callout(ax, sc, up(M.rows()[9][1], LIN_R), f"liner Ø{M.LINER_OD:g} x {M.LINER_T:g}, {len(M.holes())} x Ø{M.HOLE_D:g}",
-            (40, -30))
+            "empty chamber (baffle-only, no packing)", (-25, -48))
+    callout(ax, sc, up(M.rows()[15][1], LIN_R), f"liner Ø{M.LINER_OD:g} x {M.LINER_T:g}, {len(M.holes())} x Ø{M.HOLE_D:g}",
+            (60, -45))
     dim(ax, sc, (0, 0, -CAN_R), (M.BAFFLE_Z[0], 0, -CAN_R), f"{M.BAFFLE_Z[0]:g}", (0, -16))
     return save_view(fig, "3d_cutaway.png")
 
 
 def view_exploded():
     sc, L = Scene(el=20, az=-62), M.L
-    lv, cv, pv, bv = 0, 120, 60, -62                      # vertical levels
-    sc.tube(0, L, LIN_RI, LIN_R, STEEL, off=(0, 0, lv))
+    lv, cv, bv = 0, 75, -62                               # vertical levels
+    sc.tube(M.LINER_Z0, L - M.DISC_T, LIN_RI, LIN_R, STEEL, off=(0, 0, lv))
     sc.holes(off=(0, 0, lv))
     sc.tube(0, L, CAN_RI, CAN_R, STEEL, off=(0, 0, cv))
-    for a, b in M.CHAMBERS:
-        sc.tube(a + 1.5, b - 1.5, LIN_R + 0.5, CAN_RI - 0.5, PACK, off=(0, 0, pv), inner=False)
     for z in M.BAFFLE_Z:
         sc.tube(z - M.DISC_T / 2, z + M.DISC_T / 2, D_RI, D_R, DISC, off=(0, 0, bv), inner=False)
-    caps = (-75, L + 75 - M.DISC_T)
+    caps = (-60, L + 60 - M.DISC_T)
     for x in caps:
-        sc.tube(x, x + M.DISC_T, D_RI, D_R, DISC, off=(0, 0, lv), inner=False)
+        sc.tube(x, x + M.DISC_T, CAP_RI, D_R, DISC, off=(0, 0, lv), inner=False)
+    nipple(sc, caps[0] - 45, -1, off=(0, 0, lv))
+    nipple(sc, caps[1] + M.DISC_T + 45, 1, off=(0, 0, lv))
     fig, ax = plt.subplots(figsize=(10, 6))
     sc.draw(ax)
     seg = lambda p, q: ax.plot(*zip(sc.p2(p), sc.p2(q)), ls="--", lw=0.6, color="#666", zorder=0)
     for z in M.BAFFLE_Z:
         seg((z, 0, bv + D_R), (z, 0, lv - LIN_R))
-    seg((-72, 0, lv), (0, 0, lv)), seg((L, 0, lv), (L + 72, 0, lv))
-    seg((L / 2, 0, cv - CAN_R), (L / 2, 0, pv + CAN_RI))
+    seg((-100, 0, lv), (0, 0, lv)), seg((L, 0, lv), (L + 100, 0, lv))
     callout(ax, sc, (L * 0.6, 0, cv + CAN_R), f"MUF-001 can Ø{M.CAN_OD:g} x {M.CAN_T:g} x {L:g}", (0, 20))
-    callout(ax, sc, (L * 0.75, 0, pv + CAN_RI), "MUF-005 core fill (5 bands)", (40, 14))
+    callout(ax, sc, (caps[0] - 45 - NIP_OUT / 2, 0, lv + NIP_R), f"MUF-005 {M.PORT_THREAD} nipple", (-20, 24))
+    callout(ax, sc, (caps[1] + M.DISC_T + 45 + NIP_OUT / 2, 0, lv + NIP_R), f"MUF-005 {M.PORT_THREAD} nipple", (20, 24))
     callout(ax, sc, (L * 0.45, 0, lv + LIN_R), f"MUF-002 liner Ø{M.LINER_OD:g} x {M.LINER_T:g}, {len(M.holes())} holes",
             (0, 22))
     callout(ax, sc, (M.BAFFLE_Z[1], 0, bv - D_R), f"MUF-004 baffles x{M.N_BAFFLES} @ "
@@ -253,17 +269,18 @@ FRAME_W = letter[0] - 36 * mm
 
 TOOLS = {  # build-book step number -> exact tools
     1: "Calipers with ID jaws (0.01 mm), laptop with muffler.py",
-    2: "Bandsaw or abrasive cut-off saw, machinist square, flat file, deburr tool, marker",
+    2: "Bandsaw or abrasive cut-off saw, machinist square, flat file, deburr tool, marker, pipe vise for the nipples",
     3: "Drill press, V-block, Ø4 mm cobalt drill, TIG/MIG for tacking block + M6 nut, M6 thumb screw, file",
-    4: "Drill press, V-block, centre punch + hammer, Ø4 mm pin, Ø4 mm cobalt drill, step drill to Ø9 (or Ø9 cobalt), "
+    4: "Drill press, V-block, centre punch + hammer, Ø4 mm pin, Ø4 mm cobalt jobber drills (5+), "
        "cutting fluid, round file, deburr tool",
     5: "Acetone, lint-free rags, stainless-only wire brush, nitrile gloves",
     6: "Spacer blocks 48.5 mm and 47 mm, square, calipers",
     7: "TIG (DCEN/pulse), argon + purge line, foil tape, ER308L 1/16 in, stainless brush",
-    8: "Stainless wool, basalt or E-glass packing, masking tape, gloves + dust mask (fibres)",
+    8: f"TIG, argon purge, {M.PORT_THREAD} pipe cap (thread guard), square, ER308L 1/16 in",
     9: "Rubber mallet, gloves",
     10: "TIG, argon purge, foil tape, clamps, ER308L 1/16 in",
-    11: "Pickling paste (acid: gloves + eye protection), Schrader-valve plug, expansion plug, soapy water, brush",
+    11: f"Pickling paste (acid: gloves + eye protection), mating {M.PORT_THREAD} fitting, pipe cap, "
+        "plug with Schrader valve, soapy water, brush",
 }
 
 
@@ -380,9 +397,12 @@ def main():
              Spacer(1, 8 * mm), img(v_asm), Spacer(1, 6 * mm)]
     summary = [
         ("Outer can", f"Ø{M.CAN_OD:g} x {M.CAN_T:g} mm wall x {M.L:g} mm, 304"),
-        ("Liner", f"Ø{M.LINER_OD:g} x {M.LINER_T:g} mm wall x {M.L:g} mm, 304 tube (bought, no seam)"),
+        ("Liner", f"Ø{M.LINER_OD:g} x {M.LINER_T:g} mm wall x {M.LINER_L:g} mm, 304 tube (bought, no seam), "
+                  "captured between caps"),
         ("Perforation", f"{s['holes']} x Ø{M.HOLE_D:g} mm, {M.HOLES_PER_ROW}/row, {s['rows']} rows @ {M.ROW_PITCH:g} mm, "
-                        f"{M.ROW_OFFSET_DEG}° stagger; {s['open_total']:.1%} open (OD basis) / {s['open_id']:.1%} (ID basis)"),
+                        f"{M.ROW_OFFSET_DEG}° stagger; {s['open_id']:.1%} open (ID flow-path basis) / "
+                        f"{s['open_total']:.1%} (OD); web {s['web_id']:.2f} mm"),
+        ("Ports", f"{M.PORT_THREAD} male both ends: weld-in 304 TOE nipple, {M.NIP_RELIEF:g} mm thread relief"),
         ("Caps / baffles", f"{M.DISC_T:g} mm 304 discs: 2 caps + {M.N_BAFFLES} baffles @ "
                            f"{', '.join(f'{z:g}' for z in M.BAFFLE_Z)} mm; OD = measured can ID - 0.2"),
         ("Welding", f"TIG DCEN / pulse, ER308L 1/16 in, max {s['max_amps']} A (machine 110 A, 220 V)"),
@@ -403,13 +423,13 @@ def main():
     story += [PageBreak()]
 
     story += [Paragraph("3. 3D Views", H1),
-              KeepTogether([img(v_exp), Paragraph("Exploded: liner with 112 holes in the middle, baffles below, "
-                                                  "core fill and can above, caps on the ends. Dashed lines show where "
+              KeepTogether([img(v_exp), Paragraph(f"Exploded: liner with {len(M.holes())} holes in the middle, baffles "
+                                                  "below, can above, caps and port nipples on the ends. Dashed lines show where "
                                                   "each part goes.", CAP)]),
-              KeepTogether([img(v_cut), Paragraph("Cut-away: quarter removed to show the 4 baffles, the core fill "
+              KeepTogether([img(v_cut), Paragraph("Cut-away: quarter removed to show the 4 baffles, the empty chambers "
                                                   "between them and the perforated liner.", CAP)]),
-              KeepTogether([img(v_asm), Paragraph("Assembled: caps flush with the can ends; the liner bore is the "
-                                                  "inlet/outlet port.", CAP)]),
+              KeepTogether([img(v_asm), Paragraph(f"Assembled: caps flush with the can ends; {M.PORT_THREAD} male "
+                                                  "nipples are the inlet and outlet.", CAP)]),
               PageBreak()]
 
     bb = (OUT / "build_book.md").read_text()

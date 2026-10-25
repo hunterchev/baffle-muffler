@@ -489,7 +489,7 @@ $SKPOLY
   9
 $TDCREATE
  40
-2461339.7525
+2461339.7680092594
   9
 $TDUCREATE
  40
@@ -497,7 +497,7 @@ $TDUCREATE
   9
 $TDUPDATE
  40
-2461339.7525
+2461339.7680092594
   9
 $TDUUPDATE
  40
@@ -549,7 +549,7 @@ $SPLINESEGS
   9
 $HANDSEED
   5
-B2
+B3
   9
 $SURFTAB1
  70
@@ -929,11 +929,11 @@ $PSTYLEMODE
   9
 $FINGERPRINTGUID
   2
-{3994B429-0680-4A4F-8037-E07FA67C27BD}
+{E99300CC-A253-4548-86D9-6EEC9B920F67}
   9
 $VERSIONGUID
   2
-{5484C6DE-559F-49AE-904B-946629D0FFBF}
+{3E10F9C2-9974-4AC0-AEA8-914AD57C5083}
   9
 $EXTNAMES
 290
@@ -2233,7 +2233,7 @@ LAYER
 100
 AcDbSymbolTable
  70
-8
+9
   0
 LAYER
   5
@@ -2420,6 +2420,30 @@ WELD
 0
  62
 6
+  6
+Continuous
+370
+-3
+390
+13
+347
+21
+  0
+LAYER
+  5
+90
+330
+1
+100
+AcDbSymbolTableRecord
+100
+AcDbLayerTableRecord
+  2
+DETAIL
+ 70
+0
+ 62
+8
   6
 Continuous
 370
@@ -3229,7 +3253,7 @@ ACAD
   0
 APPID
   5
-AF
+B0
 330
 3
 100
@@ -3243,7 +3267,7 @@ HATCHBACKGROUNDCOLOR
   0
 APPID
   5
-B0
+B1
 330
 3
 100
@@ -5049,7 +5073,7 @@ _CLOSEDBLANK
   0
 BLOCK_RECORD
   5
-95
+96
 330
 9
 100
@@ -5069,7 +5093,7 @@ AcDbBlockTableRecord
   0
 BLOCK_RECORD
   5
-9F
+A0
 330
 9
 100
@@ -5389,9 +5413,9 @@ AcDbBlockEnd
   0
 BLOCK
   5
-96
+97
 330
-95
+96
 100
 AcDbEntity
   8
@@ -5415,9 +5439,9 @@ AcDbBlockBegin
   0
 INSERT
   5
-98
+99
 330
-95
+96
 100
 AcDbEntity
   8
@@ -5441,9 +5465,9 @@ _CLOSEDBLANK
   0
 LINE
   5
-9A
+9B
 330
-95
+96
 100
 AcDbEntity
   8
@@ -5465,9 +5489,9 @@ AcDbLine
   0
 MTEXT
   5
-9B
+9C
 330
-95
+96
 100
 AcDbEntity
   8
@@ -5493,9 +5517,9 @@ OpenSansCondensed-Light
   0
 POINT
   5
-9C
+9D
 330
-95
+96
 100
 AcDbEntity
   8
@@ -5511,9 +5535,9 @@ AcDbPoint
   0
 POINT
   5
-9D
+9E
 330
-95
+96
 100
 AcDbEntity
   8
@@ -5529,9 +5553,9 @@ AcDbPoint
   0
 ENDBLK
   5
-97
+98
 330
-95
+96
 100
 AcDbEntity
   8
@@ -5541,9 +5565,9 @@ AcDbBlockEnd
   0
 BLOCK
   5
-A0
+A1
 330
-9F
+A0
 100
 AcDbEntity
   8
@@ -5567,9 +5591,9 @@ AcDbBlockBegin
   0
 INSERT
   5
-A2
+A3
 330
-9F
+A0
 100
 AcDbEntity
   8
@@ -5593,9 +5617,9 @@ _CLOSEDBLANK
   0
 LINE
   5
-A4
+A5
 330
-9F
+A0
 100
 AcDbEntity
   8
@@ -5617,9 +5641,9 @@ AcDbLine
   0
 MTEXT
   5
-A5
+A6
 330
-9F
+A0
 100
 AcDbEntity
   8
@@ -5645,9 +5669,9 @@ OpenSansCondensed-Light
   0
 POINT
   5
-A6
+A7
 330
-9F
+A0
 100
 AcDbEntity
   8
@@ -5663,9 +5687,9 @@ AcDbPoint
   0
 POINT
   5
-A7
+A8
 330
-9F
+A0
 100
 AcDbEntity
   8
@@ -5681,9 +5705,9 @@ AcDbPoint
   0
 ENDBLK
   5
-A1
+A2
 330
-9F
+A0
 100
 AcDbEntity
   8
@@ -5696,26 +5720,6 @@ ENDSEC
 SECTION
   2
 ENTITIES
-  0
-CIRCLE
-  5
-90
-330
-17
-100
-AcDbEntity
-  8
-CUT
-100
-AcDbCircle
- 10
-0.0
- 20
-0.0
- 30
-0.0
- 40
-22.9
   0
 CIRCLE
   5
@@ -5735,11 +5739,31 @@ AcDbCircle
  30
 0.0
  40
+22.9
+  0
+CIRCLE
+  5
+92
+330
+17
+100
+AcDbEntity
+  8
+CUT
+100
+AcDbCircle
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+ 40
 16.1
   0
 LINE
   5
-92
+93
 330
 17
 100
@@ -5763,7 +5787,7 @@ AcDbLine
   0
 LINE
   5
-93
+94
 330
 17
 100
@@ -5787,7 +5811,7 @@ AcDbLine
   0
 DIMENSION
   5
-94
+95
 330
 17
 100
@@ -5871,7 +5895,7 @@ DSTYLE
   0
 DIMENSION
   5
-9E
+9F
 330
 17
 100
@@ -5955,7 +5979,7 @@ DSTYLE
   0
 TEXT
   5
-A8
+A9
 330
 17
 100
@@ -5985,7 +6009,7 @@ AcDbText
   0
 TEXT
   5
-A9
+AA
 330
 17
 100
@@ -6015,7 +6039,7 @@ AcDbText
   0
 TEXT
   5
-AA
+AB
 330
 17
 100
@@ -6045,7 +6069,7 @@ AcDbText
   0
 TEXT
   5
-AB
+AC
 330
 17
 100
@@ -6063,7 +6087,7 @@ AcDbText
  40
 2.5
   1
-LAYERS: CUT/HOLES = cut; DIM/TEXT/CENTER = do not cut
+LAYERS: CUT/HOLES = cut; DIM/TEXT/CENTER/DETAIL = do not cut
  11
 -30.0
  21
@@ -6075,7 +6099,7 @@ AcDbText
   0
 TEXT
   5
-AC
+AD
 330
 17
 100
@@ -6105,7 +6129,7 @@ AcDbText
   0
 TEXT
   5
-AD
+AE
 330
 17
 100
@@ -6135,7 +6159,7 @@ AcDbText
   0
 TEXT
   5
-AE
+AF
 330
 17
 100
@@ -7253,7 +7277,7 @@ CREATED_BY_EZDXF
   3
 WRITTEN_BY_EZDXF
 350
-B1
+B2
   0
 DICTIONARYVAR
   5
@@ -7265,7 +7289,7 @@ DictionaryVariables
 280
 0
   1
-1.4.5 @ 2026-10-25T23:03:36.035058+00:00
+1.4.5 @ 2026-10-25T23:25:56.842328+00:00
   0
 VISUALSTYLE
   5
@@ -7969,7 +7993,7 @@ X-Ray
   0
 DICTIONARYVAR
   5
-B1
+B2
 330
 2D
 100
@@ -7977,7 +8001,7 @@ DictionaryVariables
 280
 0
   1
-1.4.5 @ 2026-10-25T23:03:36.037080+00:00
+1.4.5 @ 2026-10-25T23:25:56.844296+00:00
   0
 ENDSEC
   0

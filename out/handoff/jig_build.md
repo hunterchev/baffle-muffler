@@ -1,14 +1,14 @@
 # Drill Jig (JIG-001) - Build Steps
 
 Two parts (`drill_jig.dxf`):
-- **A. Wrap guide plate:** 0.5 mm shim, 250 x 114.1 mm, with all 112 pattern positions as
-  Ø3 pilots. It carries the 8-hole rows (45 deg = 12.57 mm
-  on OD), 12 mm row pitch and the 22.5 deg half-pitch stagger, so nothing is laid out by hand.
+- **A. Wrap guide plate:** 0.5 mm shim, 244 x 114.1 mm, with all 480 pattern positions as
+  Ø2 pilots. It carries the 16-hole rows (22.5 deg = 6.28 mm
+  on OD), 7 mm row pitch and the 11.25 deg half-pitch stagger, so nothing is laid out by hand.
 - **B. Centering sleeve:** keeps every hole radial (through the tube axis).
 
 ## A. Guide plate
 1. Laser-cut the DXF layers `CUT` + `HOLES` in 0.5 mm aluminium or steel shim, **or** print the DXF 1:1
-   (check the 250 mm dimension with calipers) and glue it to thin card.
+   (check the 244 mm dimension with calipers) and glue it to thin card.
 2. Wrap on the liner, long edge flush with the inlet end, overlap tab on top; the tab holes must sit over the
    start holes. Tape tight; no gaps.
 
@@ -23,4 +23,5 @@ Two parts (`drill_jig.dxf`):
 
 ## Use
 Punch through the guide plate, remove it. Slide the sleeve on, drop a Ø4 pin through the bushing into the
-punch mark, lock it, drill the Ø4 pilot, move on. Open all pilots to Ø9 afterwards with a step drill.
+punch mark, lock it, drill Ø4 straight through the guide, move on. 480 holes: work row by row and
+tick rows off on the checklist.
