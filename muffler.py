@@ -47,8 +47,9 @@ LINER_Z0 = DISC_T                      # liner is captured between the caps' inn
 LINER_L = L - 2 * DISC_T
 
 # port: weld-in 304 sch40 pipe nipple, thread one end (TOE); a 3 mm cap can't hold an NPT thread itself
-PORT_THREAD = '3/4"-14 NPT'
+PORT_THREAD = '1/8"-27 NPT'
 NPT = {  # OD, hand-tight L1, effective thread L2, sch40 ID (ASME B1.20.1 / B36.19)
+    '1/8"-27 NPT': dict(od=10.49, l1=8.0, l2=13.86, pipe_id=8.5),
     '1/2"-14 NPT': dict(od=21.34, l1=8.13, l2=13.56, pipe_id=15.80),
     '3/4"-14 NPT': dict(od=26.67, l1=8.61, l2=13.86, pipe_id=20.93),
     '1"-11.5 NPT': dict(od=33.40, l1=10.16, l2=17.34, pipe_id=26.64),
