@@ -49,7 +49,7 @@ LINER_L = L - 2 * DISC_T
 # port: weld-in 304 sch40 pipe nipple, thread one end (TOE); a 3 mm cap can't hold an NPT thread itself
 PORT_THREAD = '1/8"-27 NPT'
 NPT = {  # OD, hand-tight L1, effective thread L2, sch40 ID (ASME B1.20.1 / B36.19)
-    '1/8"-27 NPT': dict(od=10.49, l1=8.0, l2=13.86, pipe_id=8.5),
+    '1/8"-27 NPT': dict(od=11.10, l1=8.0, l2=13.86, pipe_id=7.82),  # major 0.437 in, sch40 ID 0.308 in
     '1/2"-14 NPT': dict(od=21.34, l1=8.13, l2=13.56, pipe_id=15.80),
     '3/4"-14 NPT': dict(od=26.67, l1=8.61, l2=13.86, pipe_id=20.93),
     '1"-11.5 NPT': dict(od=33.40, l1=10.16, l2=17.34, pipe_id=26.64),
@@ -61,6 +61,10 @@ NIP_THREAD = math.ceil(NPT["l2"])
 NIP_LEN = NIP_SPIGOT + DISC_T + NIP_RELIEF + NIP_THREAD
 
 BAFFLE_Z = [L * (k + 1) / (N_BAFFLES + 1) for k in range(N_BAFFLES)]
+# Spacer blocks: first baffle centre from the liner inlet (liner starts one disc in from the can end),
+# and the face-to-face gap (centre pitch minus disc thickness).
+BAFFLE_FROM_LINER = BAFFLE_Z[0] - LINER_Z0
+BAFFLE_FACE_GAP = BAFFLE_Z[1] - BAFFLE_Z[0] - DISC_T
 CHAMBERS = list(zip([DISC_T] + [z + DISC_T / 2 for z in BAFFLE_Z],
                     [z - DISC_T / 2 for z in BAFFLE_Z] + [L - DISC_T]))
 FACES = [f for c in CHAMBERS for f in c]
@@ -135,7 +139,7 @@ def checks():
         ("Hole edge to cap/baffle face", f"{s['face_clear']:.2f} mm >= 3.0", s["face_clear"] >= 3.0 - 1e-9),
         ("Disc OD in can ID", f"{DISC_OD:.2f} < {CAN_ID:.2f}", DISC_OD < CAN_ID),
         ("Baffle bore over liner OD", f"{DISC_ID:.2f} > {LINER_OD_REAL:.2f}", DISC_ID > LINER_OD_REAL),
-        (f"Port {PORT_THREAD}: nipple spigots into liner", f"nipple OD {NPT['od']} < liner ID {LINER_ID:g}; "
+        (f"Port {PORT_THREAD}: nipple spigots into liner", f"nipple OD {NPT['od']:.2f} < liner ID {LINER_ID:g}; "
          f"cap bore {PORT_BORE:.1f}", NPT["od"] < LINER_ID and PORT_BORE < LINER_OD),
         ("Port thread engagement + weld relief", f"thread {NIP_THREAD} >= L2 {NPT['l2']}; relief {NIP_RELIEF:g} >= 6",
          NIP_THREAD >= NPT["l2"] and NIP_RELIEF >= 6),
@@ -248,7 +252,7 @@ def draw_cap(out):
     text(msp, "W2 fillet at the outside face, on the plain relief - never on threads", x0 - 32, ro + 3, 2.2)
     title(msp, "MUF-003", "END CAP + PORT", -30, -40, (
         f"THK {DISC_T:g} sheet, QTY 2. OD = MEASURED CAN ID - 0.2",
-        f"PORT BORE {PORT_BORE:.1f} for {PORT_THREAD} nipple (OD {NPT['od']}), 304 sch40, TOE, cut to {NIP_LEN:g}",
+        f"PORT BORE {PORT_BORE:.1f} for {PORT_THREAD} nipple (OD {NPT['od']:.2f}), 304 sch40, TOE, cut to {NIP_LEN:g}",
         "Thread relief: no thread within the weld zone; weld on the plain end only",
     ))
     save(doc, out / "MUF-003_end_cap.dxf")
@@ -444,7 +448,7 @@ def spec_md():
     md += ["", "No W4: liner is purchased tube, no shop seam. No plug welds: baffles are held by W3 only.",
            "Liner is not welded to the caps: it is captured between them and centred by the nipple spigots.", "",
            "## 4a. Port", "",
-           f"- {PORT_THREAD} male, both ends: 304 sch40 TOE nipple, OD {NPT['od']}, ID {NPT['pipe_id']}, cut to {NIP_LEN:g}",
+           f"- {PORT_THREAD} male, both ends: 304 sch40 TOE nipple, OD {NPT['od']:.2f}, ID {NPT['pipe_id']:.2f}, cut to {NIP_LEN:g}",
            f"- External thread {NIP_THREAD} (L2 {NPT['l2']}, hand-tight L1 {NPT['l1']}); {NIP_RELIEF:g} plain relief "
            f"before the cap; {NIP_SPIGOT:g} spigot into the liner bore",
            "- Thread sealant: nickel anti-seize (PTFE tape/paste breaks down at exhaust temperature)", "",
@@ -503,7 +507,7 @@ stainless-only wire brush, acetone, foil tape, soapy water, {PORT_THREAD} pipe c
 5. **Clean** - acetone on all parts; stainless-only brushes; no grinding discs used on carbon steel.
 6. **Fit**
    - Slide baffles onto liner at z = {', '.join(f'{z:g}' for z in BAFFLE_Z)} (centres) using spacer blocks
-     ({BAFFLE_Z[0] - DISC_T/2 - LINER_Z0:g} mm from the liner's inlet end, {BAFFLE_Z[1]-BAFFLE_Z[0]-DISC_T:g} mm between baffles).
+     ({BAFFLE_FROM_LINER:g} mm from the liner's inlet end, {BAFFLE_FACE_GAP:g} mm between baffles).
      Baffles sit on undrilled bands.
    - Dry-fit liner + baffles into can, caps + nipples in both ends: caps flush, spigots enter the liner bore,
      liner captured with no end play.

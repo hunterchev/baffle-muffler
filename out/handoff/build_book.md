@@ -10,7 +10,7 @@ Drawings: `MUF-000..004*.dxf`, `drill_jig.dxf` (PNG previews in `png/`). Build o
 | MUF-000 | Muffler assembly | - | 1 | Weldment; MUF-000 DXF, weld map, build book | - |
 | MUF-001 | Outer can | 304 tube 50 OD x 2 wall | 1 | Cut 250 +/-0.5, square ends, deburr. Measure ID x4. | Online Metals 50x2 304, 60 in length (MTR available) or Amazon 50x2x400 mm (cut to 250) |
 | MUF-002 | Perforated liner | 304 tube 32 OD x 2 wall (seamless pref.) | 1 | Cut 244 +/-0.3; 480x DIA 4 radial per drilling spec, using JIG-001; deburr ID+OD | AliExpress 32x2 304 tube, 300 mm (cut to 250) or uxcell 32x2 on Amazon. Fallback rolled 2 mm sheet = 7 holes/row + W4 seam variant (not generated here) |
-| MUF-003 | End cap | 304, 3 sheet | 2 | Laser: OD 45.8, port bore 10.7 for the nipple | 3 mm 304 plate; laser-cut service (SendCutSend, OSH Cut, local shop) from MUF-003/004 DXF |
+| MUF-003 | End cap | 304, 3 sheet | 2 | Laser: OD 45.8, port bore 11.3 for the nipple | 3 mm 304 plate; laser-cut service (SendCutSend, OSH Cut, local shop) from MUF-003/004 DXF |
 | MUF-004 | Baffle | 304, 3 sheet | 4 | Laser: OD 45.8, bore 32.2 | 3 mm 304 plate; laser-cut service (SendCutSend, OSH Cut, local shop) from MUF-003/004 DXF |
 | MUF-005 | Port nipple 1/8"-27 NPT | 304 sch40 pipe nipple, thread one end (TOE), 2 in long | 2 | Cut plain end to 28 overall (14 thread + 6 relief + 3 cap + 5 spigot); deburr | McMaster-Carr / plumbing or industrial supply (304 TOE nipple) |
 | MUF-006 | TIG filler rod | ER308L 1/16 in (1.6 mm); ER316L if 316 | 1 | ~0.25 kg tube | Welding supply |
@@ -41,7 +41,7 @@ stainless-only wire brush, acetone, foil tape, soapy water, 1/8"-27 NPT pipe cap
 2. **Cut**
    - Can to 250 +/-0.5 and liner to 244 +/-0.3, ends square within 0.3 (check with a square). Deburr.
    - Cut the two 1/8"-27 NPT TOE nipples to 28 overall from the plain end. Deburr.
-   - Order/cut discs: 2x MUF-003 caps (port bore 10.7), 4x MUF-004 baffles. Cut the JIG-001 guide plate.
+   - Order/cut discs: 2x MUF-003 caps (port bore 11.3), 4x MUF-004 baffles. Cut the JIG-001 guide plate.
 3. **Jig** - build the centering sleeve per `jig_build.md`.
 4. **Drill** (liner)
    - Wrap guide plate, edge flush with the inlet end, tape tight. Center punch all 480 pilot holes. Remove.
@@ -52,7 +52,7 @@ stainless-only wire brush, acetone, foil tape, soapy water, 1/8"-27 NPT pipe cap
 5. **Clean** - acetone on all parts; stainless-only brushes; no grinding discs used on carbon steel.
 6. **Fit**
    - Slide baffles onto liner at z = 50, 100, 150, 200 (centres) using spacer blocks
-     (45.5 mm from the liner's inlet end, 47 mm between baffles).
+     (47 mm from the liner's inlet end, 47 mm between baffles).
      Baffles sit on undrilled bands.
    - Dry-fit liner + baffles into can, caps + nipples in both ends: caps flush, spigots enter the liner bore,
      liner captured with no end play.

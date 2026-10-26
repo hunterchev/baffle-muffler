@@ -2,7 +2,7 @@ part_no,name,material,qty,machining_notes,source
 MUF-000,Muffler assembly,-,1,"Weldment; MUF-000 DXF, weld map, build book",-
 MUF-001,Outer can,304 tube 50 OD x 2 wall,1,"Cut 250 +/-0.5, square ends, deburr. Measure ID x4.","Online Metals 50x2 304, 60 in length (MTR available) or Amazon 50x2x400 mm (cut to 250)"
 MUF-002,Perforated liner,304 tube 32 OD x 2 wall (seamless pref.),1,"Cut 244 +/-0.3; 480x DIA 4 radial per drilling spec, using JIG-001; deburr ID+OD","AliExpress 32x2 304 tube, 300 mm (cut to 250) or uxcell 32x2 on Amazon. Fallback rolled 2 mm sheet = 7 holes/row + W4 seam variant (not generated here)"
-MUF-003,End cap,"304, 3 sheet",2,"Laser: OD 45.8, port bore 10.7 for the nipple","3 mm 304 plate; laser-cut service (SendCutSend, OSH Cut, local shop) from MUF-003/004 DXF"
+MUF-003,End cap,"304, 3 sheet",2,"Laser: OD 45.8, port bore 11.3 for the nipple","3 mm 304 plate; laser-cut service (SendCutSend, OSH Cut, local shop) from MUF-003/004 DXF"
 MUF-004,Baffle,"304, 3 sheet",4,"Laser: OD 45.8, bore 32.2","3 mm 304 plate; laser-cut service (SendCutSend, OSH Cut, local shop) from MUF-003/004 DXF"
 MUF-005,"Port nipple 1/8""-27 NPT","304 sch40 pipe nipple, thread one end (TOE), 2 in long",2,Cut plain end to 28 overall (14 thread + 6 relief + 3 cap + 5 spigot); deburr,McMaster-Carr / plumbing or industrial supply (304 TOE nipple)
 MUF-006,TIG filler rod,ER308L 1/16 in (1.6 mm); ER316L if 316,1,~0.25 kg tube,Welding supply
