@@ -15,14 +15,14 @@ Part: 50 x 250 baffle muffler.  Builder: ________  Date: ________
 - [ ] Cap fit: cap enters can by hand pressure, gap <= 0.3 all round, sits flush with the can end.
 - [ ] Baffles slide on the liner without forcing; liner 244 mm, captured between caps with no end play.
 
-## Port (3/4"-14 NPT)
+## Port (1/8"-27 NPT)
 - [ ] Nipple thread 14 mm long, 6 mm plain relief outside the cap, spigot 5 mm into the liner.
 - [ ] Thread gauge / mating fitting runs on by hand after welding (no weld spatter or heat damage on threads).
 - [ ] Baffle spacing: centres at 50, 100, 150, 200 +/-1 mm, square to axis within 0.5 mm at OD.
 
 ## Welds
 - [ ] W3 x4, W2 x2, W1 x2 complete, full 360, no cracks/porosity/undercut; colour straw-blue, not grey.
-- [ ] Soapy-water leak test: 3/4"-14 NPT pipe cap on the outlet, plug with Schrader valve in the inlet, **0.2-0.3 bar (3-4 psi) max**. Brush
+- [ ] Soapy-water leak test: 1/8"-27 NPT pipe cap on the outlet, plug with Schrader valve in the inlet, **0.2-0.3 bar (3-4 psi) max**. Brush
       soap on every W1 and W2 joint: no bubbles in 30 s. (W3 is internal; leaks between chambers don't matter.)
 
 ## Final

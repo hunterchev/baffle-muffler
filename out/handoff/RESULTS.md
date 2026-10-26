@@ -13,7 +13,7 @@ Args: can wall 2, can ID 46.00, liner OD 32.00, max amps 110
 | Hole edge to cap/baffle face | 3.25 mm >= 3.0 | PASS |
 | Disc OD in can ID | 45.80 < 46.00 | PASS |
 | Baffle bore over liner OD | 32.20 > 32.00 | PASS |
-| Port 3/4"-14 NPT: nipple spigots into liner | nipple OD 26.67 < liner ID 28; cap bore 26.9 | PASS |
+| Port 1/8"-27 NPT: nipple spigots into liner | nipple OD 11.10 < liner ID 28; cap bore 11.3 | PASS |
 | Port thread engagement + weld relief | thread 14 >= L2 13.86; relief 6 >= 6 | PASS |
 | Baffle count 3-5 | 4 | PASS |
 | Max TIG amps (DC / pulse peak) <= welder | 100 A <= 110 A | PASS |

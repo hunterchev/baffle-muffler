@@ -3,7 +3,7 @@
 Inline baffle-style exhaust muffler for small 4-stroke engines: 304 stainless, home TIG build (110 A max).
 
 - 50 x 2 mm can, 32 x 2 mm liner (244 mm, captured), 480 x Ø4 holes (16/row, 30 rows, 11.25° stagger)
-- 4 baffles + 2 caps (3 mm), 3/4"-14 NPT male weld-in port nipples, baffle-only (no packing)
+- 4 baffles + 2 caps (3 mm), 1/8"-27 NPT male weld-in port nipples, baffle-only (no packing)
 - **Build book (everything in one file):** [`out/handoff/build_book.pdf`](out/handoff/build_book.pdf)
 - DXF drawings, drill jig, BOM, checklist: [`out/handoff/`](out/handoff/)
 

@@ -274,7 +274,7 @@ TOOLS = {  # build-book step number -> exact tools
     4: "Drill press, V-block, centre punch + hammer, Ø4 mm pin, Ø4 mm cobalt jobber drills (5+), "
        "cutting fluid, round file, deburr tool",
     5: "Acetone, lint-free rags, stainless-only wire brush, nitrile gloves",
-    6: "Spacer blocks 48.5 mm and 47 mm, square, calipers",
+    6: f"Spacer blocks {M.BAFFLE_FROM_LINER:g} mm and {M.BAFFLE_FACE_GAP:g} mm, square, calipers",
     7: "TIG (DCEN/pulse), argon + purge line, foil tape, ER308L 1/16 in, stainless brush",
     8: f"TIG, argon purge, {M.PORT_THREAD} pipe cap (thread guard), square, ER308L 1/16 in",
     9: "Rubber mallet, gloves",
